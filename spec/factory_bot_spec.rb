@@ -6,6 +6,7 @@ require 'factory_bot'
 describe FactoryBot do
   subject(:register_factory) { described_class.register(factory_name) }
 
+  let(:factory_class) { RingFactoryBotTest::EmptyClass }
   let(:factory_name) { 'ring_factory_bot_test/empty_class' }
   let(:factories_list) { [factory_name] }
   let(:empty) { [] }
@@ -47,6 +48,7 @@ describe FactoryBot do
       end
     end
   end
+
   describe '::list' do
     subject { described_class.list }
 
@@ -66,6 +68,7 @@ describe FactoryBot do
       end
     end
   end
+
   describe '::delete_all' do
     before do
       register_factory
@@ -78,5 +81,19 @@ describe FactoryBot do
     end
   end
 
-  describe '::build'
+  describe '::build' do
+    subject(:build) { described_class.build(factory_name) }
+
+    it 'return instance of expected constant' do
+      is_expected.to be_instance_of(factory_class)
+    end
+
+    context 'when factory not defined' do
+      let(:factory_name) { :any_other_class }
+
+      it 'return instance of expected constant' do
+        expect { build }.to raise_error(NameError)
+      end
+    end
+  end
 end

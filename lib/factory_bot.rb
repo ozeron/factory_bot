@@ -11,9 +11,15 @@ class FactoryBot
 
     def register(name, &block)
       @factories ||= {}
+      @classes || {}
       validate_no_dublicate!(name)
       validate_can_constantize!(name)
       @factories[name] = block || NO_OP
+      # @classes[name] =
+    end
+
+    def build(name)
+      constantize(name).new
     end
 
     def delete_all
@@ -27,6 +33,10 @@ class FactoryBot
     end
 
     def validate_can_constantize!(name)
+      constantize(name)
+    end
+
+    def constantize(name)
       name.to_s.classify.constantize
     end
   end
