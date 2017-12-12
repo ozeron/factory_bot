@@ -6,7 +6,7 @@ require 'factory_bot'
 describe FactoryBot do
   subject(:register_factory) { described_class.register(factory_name) }
 
-  let(:factory_name) { :user }
+  let(:factory_name) { 'ring_factory_bot_test/empty_class' }
   let(:factories_list) { [factory_name] }
   let(:empty) { [] }
 
@@ -24,6 +24,14 @@ describe FactoryBot do
     context 'when no block passed with name' do
       it 'works fine' do
         expect { register_factory }.not_to raise_error
+      end
+    end
+
+    context 'when can not find constant' do
+      it 'raise argument error' do
+        expect { described_class.register(:not_existed_class) }.to(
+          raise_error(NameError)
+        )
       end
     end
 
@@ -49,8 +57,6 @@ describe FactoryBot do
     end
 
     context 'with registered factory' do
-      let(:factory_name) { :user }
-
       before do
         described_class.register(factory_name)
       end
@@ -71,5 +77,6 @@ describe FactoryBot do
       )
     end
   end
+
   describe '::build'
 end

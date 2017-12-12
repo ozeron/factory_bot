@@ -14,6 +14,8 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'parser/ruby24'
+require 'byebug'
+require 'support'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
