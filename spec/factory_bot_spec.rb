@@ -2,10 +2,11 @@ require 'spec_helper'
 require 'factory_bot'
 
 describe FactoryBot do
+  subject(:register_factory) { described_class.register(factory_name) }
+
   let(:factory_name) { :user }
   let(:factories_list) { [factory_name] }
   let(:empty) { [] }
-  subject(:register_factory) { described_class.register(factory_name) }
 
   after do
     described_class.delete_all
@@ -32,13 +33,14 @@ describe FactoryBot do
   end
   describe '::list' do
     subject { described_class.list }
-    context 'empty factory bot' do
+
+    context 'with empty factory bot' do
       it 'return empty list' do
         is_expected.to be_empty
       end
     end
 
-    context 'after registered factory' do
+    context 'with registered factory' do
       let(:factory_name) { :user }
 
       before do
