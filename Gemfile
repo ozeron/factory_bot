@@ -12,5 +12,6 @@ group :development do
 end
 
 group :test do
-  gem 'rspec'
+  gem 'rspec', '< 3.7.0'
+  gem 'mutant-rspec'
 end
