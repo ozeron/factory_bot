@@ -21,6 +21,12 @@ describe FactoryBot do
       )
     end
 
+    context 'when no block passed with name' do
+      it 'works fine' do
+        expect { register_factory }.not_to raise_error
+      end
+    end
+
     context 'when factory with same name exist' do
       before do
         register_factory
