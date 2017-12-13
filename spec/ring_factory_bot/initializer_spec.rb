@@ -2,12 +2,43 @@ require 'spec_helper'
 require 'ring_factory_bot/initializer'
 
 describe RingFactoryBot::Initializer do
+  subject { initializer }
+
   let(:initialized_constant) { RingFactoryBotTest::ClassWithAttr }
+  let(:const_name) { initialized_constant.name.underscore }
   let(:initializer) { described_class.new(initialized_constant) }
 
-  describe '#initialize' do
-    subject { initializer }
+  describe '::build' do
+    subject(:builded) { described_class.build(const_name) }
 
+    it 'will return instance of Initializer' do
+      is_expected.to be_instance_of(described_class)
+    end
+
+    it 'will constantize const name' do
+      expect(builded.const).to eq(initialized_constant)
+    end
+
+    context 'when const supplied as second argument' do
+      subject(:builded) { described_class.build(const_name, second_const) }
+
+      let(:second_const) { RingFactoryBotTest::EmptyClass }
+
+      it 'will use second const' do
+        expect(builded.const).to eq(second_const)
+      end
+    end
+
+    context 'when can not classify name' do
+      let(:const_name) { 'unknown_name' }
+
+      it 'will thron name error' do
+        expect { builded }.to raise_error(NameError)
+      end
+    end
+  end
+
+  describe '#initialize' do
     it 'create instance' do
       is_expected.to be_instance_of(described_class)
     end
