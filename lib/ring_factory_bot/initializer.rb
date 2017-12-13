@@ -3,6 +3,13 @@
 module RingFactoryBot
   class Initializer
     ATTRIBUTES = %I[const attributes].freeze
+    NO_OP = proc{}
+
+    def self.build(name, const = nil, &block)
+      initializer = new(const || name.to_s.classify.constantize)
+      initializer.instance_eval(&block || NO_OP)
+      initializer
+    end
 
     def initialize(const)
       @const = const

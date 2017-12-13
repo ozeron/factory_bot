@@ -34,10 +34,6 @@ describe RingFactoryBot::InitializeOperation do
       end
     end
 
-    context 'block shares index' do
-      #FIXME: implement test and functionality
-    end
-
     context 'with unsupported keyword arguments' do
       subject(:builded) do
         described_class.build(initializer, unsupported_attribute: new_value)

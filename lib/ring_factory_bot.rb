@@ -4,25 +4,23 @@ require 'ring_factory_bot/initializer'
 
 module RingFactoryBot
   class <<self
-    NO_OP = proc{}
-
     def list
       @factories&.keys || []
     end
 
-    def register(name, &block)
+    def register(name, const = nil, &block)
       @factories ||= {}
       @classes || {}
       validate_no_dublicate!(name)
-      validate_can_constantize!(name)
-      @factories[name] = block || NO_OP
-      # @classes[name] =
+      validate_can_constantize!(name) if const.nil?
+      @factories[name] = Initializer.build(name, const, &block)
     end
 
     def build(name, **args)
-      initializer = Initializer.new(constantize(name))
-      initializer.instance_eval(&@factories.fetch(name))
-      InitializeOperation.build(initializer, **args)
+      InitializeOperation.build(@factories.fetch(name), **args)
+    rescue KeyError
+      msg = "Factory '#{name}' not defined, use #register to add it"
+      raise_error NameError, msg
     end
 
     def delete_all
@@ -36,10 +34,6 @@ module RingFactoryBot
     end
 
     def validate_can_constantize!(name)
-      constantize(name)
-    end
-
-    def constantize(name)
       name.to_s.classify.constantize
     end
   end

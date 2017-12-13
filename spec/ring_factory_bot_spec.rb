@@ -22,6 +22,17 @@ describe RingFactoryBot do
       )
     end
 
+    context 'when constant passed as second argument' do
+      let(:constant) { RingFactoryBotTest::EmptyClass }
+      let(:factory_name) { 'my_test_factory_name' }
+
+      it 'can register custom name for constant' do
+        expect { described_class.register(factory_name, constant) }.to(
+          change { described_class.list }.from(empty).to(factories_list)
+        )
+      end
+    end
+
     context 'when no block passed with name' do
       it 'works fine' do
         expect { register_factory }.not_to raise_error
