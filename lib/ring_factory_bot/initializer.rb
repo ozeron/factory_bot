@@ -16,6 +16,11 @@ module RingFactoryBot
       @attributes = []
     end
 
+    def respond_to_missing?(symbol, include_all = false)
+      return true if valid_attribute_name?(symbol)
+      super(symbol, include_all)
+    end
+
     def method_missing(symbol, *args, &block)
       if return_instance_variable?(symbol, *args, &block)
         return instance_variable_get("@#{symbol.to_s}")

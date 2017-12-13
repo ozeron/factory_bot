@@ -13,6 +13,20 @@ describe RingFactoryBot::Initializer do
     end
   end
 
+  describe '#respond_to?' do
+    it 'return true for #attributes' do
+      is_expected.to respond_to('attributes')
+    end
+
+    it 'return true for #const' do
+      is_expected.to respond_to('const')
+    end
+
+    it 'return false for some generic attribute' do
+      is_expected.not_to respond_to('some_attr')
+    end
+  end
+
   describe '#const' do
     subject { initializer.const }
 
