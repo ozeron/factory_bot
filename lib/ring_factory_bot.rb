@@ -19,6 +19,12 @@ module RingFactoryBot
       # @classes[name] =
     end
 
+    def build(name, **args)
+      initializer = Initializer.new(constantize(name))
+      initializer.instance_eval(&@factories.fetch(name))
+      InitializeOperation.build(initializer, **args)
+    end
+
     def delete_all
       @factories = {}
     end

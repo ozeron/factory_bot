@@ -80,4 +80,41 @@ describe RingFactoryBot do
       )
     end
   end
+
+  describe '::build' do
+    subject(:builded) { described_class.build(factory_name) }
+
+    context 'when factory not defined' do
+      let(:factory_name) { :any_other_class }
+
+      it 'raise error' do
+        expect { builded }.to raise_error(NameError)
+      end
+    end
+
+    context 'when factory defined' do
+      let(:factory_class) { RingFactoryBotTest::ClassWithAttr }
+      let(:factory_name) { 'ring_factory_bot_test/class_with_attr' }
+
+      before do
+        described_class.register(factory_name) do
+          attribute 1452
+        end
+      end
+
+      it 'return instance of expected constant' do
+        is_expected.to be_instance_of(factory_class)
+      end
+
+      it 'attribute initialized as expected' do
+        expect(builded.attribute).to eq(1452)
+      end
+
+      it 'allow to overwrite attributes' do
+        expect(
+          described_class.build(factory_name, attribute: :new_value).attribute
+        ).to(eq(:new_value))
+      end
+    end
+  end
 end
