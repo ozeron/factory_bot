@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'active_support/core_ext/string/inflections.rb'
-require 'ring_factory_bot/initializer'
+require_relative 'ring_factory_bot/initializer'
+require_relative 'ring_factory_bot/initialize_operation'
 
 module RingFactoryBot
   class <<self
@@ -12,7 +13,6 @@ module RingFactoryBot
       @factories ||= {}
       @classes || {}
       validate_no_dublicate!(name)
-      validate_can_constantize!(name) if const.nil?
       @factories[name] = Initializer.build(name, const, &block)
     end
 
@@ -27,14 +27,12 @@ module RingFactoryBot
       @factories = {}
     end
 
+    private
+
     def validate_no_dublicate!(name)
       return unless @factories.key?(name)
       err_msg = 'you can register only one factory with this name'
       raise ArgumentError, err_msg
-    end
-
-    def validate_can_constantize!(name)
-      name.to_s.classify.constantize
     end
   end
 end

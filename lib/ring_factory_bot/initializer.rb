@@ -23,7 +23,7 @@ module RingFactoryBot
 
     def method_missing(symbol, *args, &block)
       if return_instance_variable?(symbol, *args, &block)
-        return instance_variable_get("@#{symbol.to_s}")
+        return instance_variable_get("@#{symbol}")
       end
 
       if const_has_setter?(symbol)
@@ -31,13 +31,17 @@ module RingFactoryBot
         return
       end
 
-      super(symbol, *args, &block)
+      super
     end
 
     private
 
+    def valid_attribute_name?(symbol)
+      ATTRIBUTES.include?(symbol)
+    end
+
     def return_instance_variable?(symbol, *args, &block)
-      ATTRIBUTES.include?(symbol) && args.empty? && block.nil?
+      valid_attribute_name?(symbol) && args.empty? && block.nil?
     end
 
     def const_has_setter?(symbol)
