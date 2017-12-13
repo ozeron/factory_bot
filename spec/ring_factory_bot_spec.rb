@@ -7,7 +7,8 @@ describe RingFactoryBot do
   subject(:register_factory) { described_class.register(factory_name) }
 
   let(:factory_class) { RingFactoryBotTest::EmptyClass }
-  let(:factory_name) { 'ring_factory_bot_test/empty_class' }
+  let(:factory_class_name) { factory_class.name.underscore }
+  let(:factory_name) { factory_class_name }
   let(:factories_list) { [factory_name] }
   let(:empty) { [] }
 
@@ -100,6 +101,22 @@ describe RingFactoryBot do
 
       it 'raise error' do
         expect { builded }.to raise_error(NameError)
+      end
+    end
+
+    context 'when register factory as string but build by symbol' do
+      let(:factory_name) { factory_class_name.to_sym }
+
+      before do
+        described_class.register(factory_class_name)
+      end
+
+      it 'to not raise error' do
+        expect { builded }.not_to raise_error
+      end
+
+      it 'return correct instance' do
+        is_expected.to be_instance_of(factory_class)
       end
     end
 

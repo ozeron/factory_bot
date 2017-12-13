@@ -17,10 +17,10 @@ module RingFactoryBot
     end
 
     def build(name, **args)
-      InitializeOperation.build(@factories.fetch(name), **args)
+      InitializeOperation.build(@factories.fetch(name.to_s), **args)
     rescue KeyError
       msg = "Factory '#{name}' not defined, use #register to add it"
-      raise_error NameError, msg
+      raise NameError, msg
     end
 
     def delete_all
