@@ -16,9 +16,8 @@ module RingFactoryBot
       @attributes = []
     end
 
-    def respond_to_missing?(symbol, include_all = false)
+    def respond_to_missing?(symbol, _)
       return true if valid_attribute_name?(symbol)
-      super(symbol, include_all)
     end
 
     def method_missing(symbol, *args, &block)
@@ -45,12 +44,12 @@ module RingFactoryBot
     end
 
     def const_has_setter?(symbol)
-      @const.instance_methods.include?("#{symbol}=".to_sym)
+      const.instance_methods.include?("#{symbol}=".to_sym)
     end
 
     def remember_step(symbol, *args, &block)
       validate_step_arguments!(*args, &block)
-      @attributes.push([symbol, wrap_args_to_block(*args, &block)])
+      attributes.push([symbol, wrap_args_to_block(*args, &block)])
     end
 
     def wrap_args_to_block(*args, &block)
@@ -59,7 +58,7 @@ module RingFactoryBot
     end
 
     def validate_step_arguments!(*args, &block)
-      return if !args.nil? || !block.nil?
+      return if !args.empty? || !block.nil?
       error_message = 'You should provide block or default value'
       raise ArgumentError, error_message
     end

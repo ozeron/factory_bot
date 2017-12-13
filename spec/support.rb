@@ -8,4 +8,8 @@ module RingFactoryBotTest
   class ClassWithAttr
     attr_accessor :attribute
   end
+
+  class ClassWithWriteAttr
+    attr_writer :attribute
+  end
 end

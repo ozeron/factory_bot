@@ -4,7 +4,7 @@ require 'ring_factory_bot/initializer'
 describe RingFactoryBot::Initializer do
   subject { initializer }
 
-  let(:initialized_constant) { RingFactoryBotTest::ClassWithAttr }
+  let(:initialized_constant) { RingFactoryBotTest::ClassWithWriteAttr }
   let(:const_name) { initialized_constant.name.underscore }
   let(:initializer) { described_class.new(initialized_constant) }
 
@@ -41,6 +41,14 @@ describe RingFactoryBot::Initializer do
   describe '#initialize' do
     it 'create instance' do
       is_expected.to be_instance_of(described_class)
+    end
+
+    it 'can return empty list attributes' do
+      expect(initializer.attributes).to eq([])
+    end
+
+    it 'can return const' do
+      expect(initializer.const).to eq(initialized_constant)
     end
   end
 
@@ -144,13 +152,23 @@ describe RingFactoryBot::Initializer do
       end
     end
 
+    context 'when no data supplied' do
+      it 'raise ArgumentError' do
+        expect do
+          initializer.instance_eval do
+            attribute
+          end
+        end.to(raise_error(ArgumentError, /block or default value/))
+      end
+    end
+
     context 'when class not have attribute' do
       it 'raise NoMethodError' do
         expect do
           initializer.instance_eval do
             no_attribute 5
           end
-        end.to(raise_error(NoMethodError))
+        end.to(raise_error(NameError, /undefined local/))
       end
     end
   end
