@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'active_support/core_ext/string/inflections.rb'
 require_relative 'ring_factory_bot/initializer'
 require_relative 'ring_factory_bot/initialize_operation'
