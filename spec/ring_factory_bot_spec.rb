@@ -23,6 +23,10 @@ describe RingFactoryBot do
       )
     end
 
+    it 'return self' do
+      is_expected.to eq(described_class)
+    end
+
     context 'when constant passed as second argument' do
       let(:constant) { RingFactoryBotTest::EmptyClass }
       let(:factory_name) { 'my_test_factory_name' }
