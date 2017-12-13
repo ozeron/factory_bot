@@ -4,4 +4,8 @@
 module RingFactoryBotTest
   class EmptyClass
   end
+
+  class ClassWithAttr
+    attr_accessor :attribute
+  end
 end
