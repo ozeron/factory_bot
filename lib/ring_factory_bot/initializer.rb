@@ -12,6 +12,7 @@ module RingFactoryBot
     end
 
     def initialize(const)
+      validate!(const)
       @const = const
       @attributes = []
     end
@@ -55,6 +56,12 @@ module RingFactoryBot
     def wrap_args_to_block(*args, &block)
       return block unless block.nil?
       proc { args.fetch(0) }
+    end
+
+    def validate!(constant)
+      return if constant.is_a?(Class)
+      error_message = 'You can pass only Class object'
+      raise ArgumentError, error_message
     end
 
     def validate_step_arguments!(*args, &block)

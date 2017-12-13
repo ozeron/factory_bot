@@ -36,6 +36,14 @@ describe RingFactoryBot::Initializer do
         expect { builded }.to raise_error(NameError)
       end
     end
+
+    context 'when constant is not class' do
+      let(:const_name) { 'ring_factory_bot_test' }
+
+      it 'will thron name error' do
+        expect { builded }.to raise_error(ArgumentError, /Class object/)
+      end
+    end
   end
 
   describe '#initialize' do
@@ -69,11 +77,10 @@ describe RingFactoryBot::Initializer do
   describe '#const' do
     subject { initializer.const }
 
-    let(:const) { RingFactoryBotTest }
-    let(:initializer) { described_class.new(const) }
+    let(:initializer) { described_class.new(initialized_constant) }
 
     it 'return constant initialer was created with' do
-      is_expected.to eq(const)
+      is_expected.to eq(initialized_constant)
     end
   end
 
