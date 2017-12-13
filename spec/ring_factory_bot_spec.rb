@@ -104,6 +104,38 @@ describe RingFactoryBot do
       end
     end
 
+    context 'when register factory as symbol and build by sym' do
+      let(:factory_name) { factory_class_name.to_sym }
+
+      before do
+        described_class.register(factory_name)
+      end
+
+      it 'to not raise error' do
+        expect { builded }.not_to raise_error
+      end
+
+      it 'return correct instance' do
+        is_expected.to be_instance_of(factory_class)
+      end
+    end
+
+    context 'when register factory as symbol but build by string' do
+      let(:factory_build_name) { factory_class_name.to_sym }
+
+      before do
+        described_class.register(factory_build_name)
+      end
+
+      it 'to not raise error' do
+        expect { builded }.not_to raise_error
+      end
+
+      it 'return correct instance' do
+        is_expected.to be_instance_of(factory_class)
+      end
+    end
+
     context 'when register factory as string but build by symbol' do
       let(:factory_name) { factory_class_name.to_sym }
 

@@ -13,7 +13,7 @@ module RingFactoryBot
       @factories ||= {}
       @classes || {}
       validate_no_dublicate!(name)
-      @factories[name] = Initializer.build(name, const, &block)
+      @factories[name.to_s] = Initializer.build(name, const, &block)
     end
 
     def build(name, **args)
