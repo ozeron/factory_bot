@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'factory_bot'
+require 'ring_factory_bot'
 
-describe FactoryBot do
+describe RingFactoryBot do
   subject(:register_factory) { described_class.register(factory_name) }
 
   let(:factory_class) { RingFactoryBotTest::EmptyClass }
@@ -78,22 +78,6 @@ describe FactoryBot do
       expect { described_class.delete_all }.to(
         change { described_class.list }.from(factories_list).to(empty)
       )
-    end
-  end
-
-  describe '::build' do
-    subject(:build) { described_class.build(factory_name) }
-
-    it 'return instance of expected constant' do
-      is_expected.to be_instance_of(factory_class)
-    end
-
-    context 'when factory not defined' do
-      let(:factory_name) { :any_other_class }
-
-      it 'return instance of expected constant' do
-        expect { build }.to raise_error(NameError)
-      end
     end
   end
 end

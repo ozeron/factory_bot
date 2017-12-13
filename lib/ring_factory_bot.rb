@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 require 'active_support/core_ext/string/inflections.rb'
+require 'ring_factory_bot/initializer'
 
-class FactoryBot
+module RingFactoryBot
   class <<self
     NO_OP = proc{}
 
@@ -16,10 +17,6 @@ class FactoryBot
       validate_can_constantize!(name)
       @factories[name] = block || NO_OP
       # @classes[name] =
-    end
-
-    def build(name)
-      constantize(name).new
     end
 
     def delete_all
